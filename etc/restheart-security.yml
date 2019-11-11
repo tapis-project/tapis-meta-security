@@ -103,9 +103,9 @@ auth-mechanisms:
     - name: tapisIdentityAuthMechanism
       class: org.restheart.security.plugins.mechanisms.TapisIdentityAuthMechanism
       args:
-        serviceToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL2Rldi5hcGkudGFwaXMuaW8vdG9rZW5zL3YzIiwic3ViIjoibWV0YUBkZXYiLCJ0YXBpcy90ZW5hbnRfaWQiOiJkZXYiLCJ0YXBpcy90b2tlbl90eXBlIjoiYWNjZXNzIiwidGFwaXMvZGVsZWdhdGlvbiI6ZmFsc2UsInRhcGlzL2RlbGVnYXRpb25fc3ViIjpudWxsLCJ0YXBpcy91c2VybmFtZSI6Im1ldGEiLCJ0YXBpcy9hY2NvdW50X3R5cGUiOiJzZXJ2aWNlIiwiZXhwIjoxNjA0NjgwNjY3fQ.XXd7ZZgZJfP6mcwzYF5PdcHBkTB2dXTJTOljtT9xTIkkz-QV5v-_eHFzZWshJH4Hns4b6nGF-1eBoy_VugmHoMFWPFcC9RijBlM1brReSEr47PXgERPWazPgJecGzwfxSELE4xECIlVKd1GlHiQc7t4B-xhZ1FzbcT1eJmzI5D5Wp54A3Eytq7HU2o6RWN_8ARxgcWece0bKCPWpYF3tVhuH5y_-6lomp6nrcx8JgqdwpmGLtqFqf5zHmVMDt61GlneMou3C4OwVrCvhF0ZNXE4eQDmWgi0-5k9HJDGbrEz5BLT_RuTe6GZ-42DsICrjQHjYQ_m_ALgreDmT-ARgeQ"
-        tokenHeader: "X-Tapis-Token"
-        securityKernalEndPoint: "https://dev.develop.tapis.io/security/v3"
+        serviceToken: {{{serviceToken}}}
+        tokenHeader: {{{tokenHeader}}}
+        securityKernalEndPoint: {{{securityKernalEndPoint}}}
 
 ## Authenticators
 
@@ -137,6 +137,7 @@ authenticators:
 #       args:
 #         conf-file: ../etc/acl.yml
 
+# be aware using BootStrapper execution set working dir to
 authorizers:
     - name: tapisRequestPredicatesAuthorizer
       class: org.restheart.security.plugins.authorizers.TapisRequestPredicatesAuthorizer
