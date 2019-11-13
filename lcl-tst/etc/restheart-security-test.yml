@@ -15,7 +15,7 @@ https-port: 4443
 
 http-listener: true
 http-host: 0.0.0.0
-http-port: 8080
+http-port: 18080
 
 #### Instance name
 
@@ -36,15 +36,22 @@ instance-name: test
  # connections-ttl (optional, default -1) Connections Time to Live in seconds.
  # problem-server-retry (optional, default 10) Time in seconds between retries for problem server.
 proxies:
-    - location: /pecho
-      proxy-pass: http://127.0.0.1:8080/echo
-    - location: /piecho
-      proxy-pass: http://127.0.0.1:8080/iecho
-    - location: /rh
-      proxy-pass: ajp://127.0.0.1:8009
-      name: restheart
-    - location: /anything
-      proxy-pass: https://httpbin.org/anything
+  - location: /v3/meta/
+    proxy-pass: {{{restheart-proxy-pass}}}
+    rewrite-host-header: true
+    connections-per-thread: 20
+    name: restheart
+
+# proxies:
+#     - location: /pecho
+#       proxy-pass: http://127.0.0.1:18080/echo
+#     - location: /piecho
+#       proxy-pass: http://127.0.0.1:18080/iecho
+#     - location: /rh
+#       proxy-pass: ajp://127.0.0.1:8009
+#       name: restheart
+#     - location: /anything
+#       proxy-pass: https://httpbin.org/anything
       
 
 #### SSL Configuration
@@ -69,7 +76,7 @@ use-embedded-keystore: true
 
 ### Security
 
- # RESTHeart Security security is pluggable, you can provide you own 
+ # RESTHeart Security security is pluggable, you can provide you own
  # implementations of Authenticator Mechanisms, Authenticator, Authorizer
  # and Token Manager
 
@@ -83,21 +90,21 @@ use-embedded-keystore: true
  # See README.md for the list of available Authentication Mechanisms
 
 auth-mechanisms:
-    - name: authTokenBasicAuthMechanism
-      class: org.restheart.security.plugins.mechanisms.TokenBasicAuthMechanism
-      args: 
-        realm: RESTHeart Realm
-    - name: basicAuthenticationMechanism
-      class:  org.restheart.security.plugins.mechanisms.BasicAuthMechanism
-      args:
-        realm: RESTHeart Realm
-        authenticator: simpleFileAuthenticator
-    - name: digestAuthenticationMechanism
-      class:  org.restheart.security.plugins.mechanisms.DigestAuthMechanism
-      args: 
-        realm: RESTHeart Realm
-        domain: localhost
-        authenticator: simpleFileAuthenticator
+#    - name: tokenBasicAuthMechanism
+#      class: org.restheart.security.plugins.mechanisms.TokenBasicAuthMechanism
+#      args:
+#        realm: RESTHeart Realm
+#    - name: basicAuthMechanism
+#      class:  org.restheart.security.plugins.mechanisms.BasicAuthMechanism
+#      args:
+#        realm: RESTHeart Realm
+#        authenticator: simpleFileAuthenticator
+#    - name: digestAuthMechanism
+#      class:  org.restheart.security.plugins.mechanisms.DigestAuthMechanism
+#      args:
+#        realm: RESTHeart Realm
+#        domain: localhost
+#        authenticator: simpleFileAuthenticator
 #    - name: identityAuthenticationMechanism
 #      class: org.restheart.security.plugins.mechanisms.IdentityAuthMechanism
 #      args:
@@ -105,10 +112,16 @@ auth-mechanisms:
 #        roles:
 #            - admin
 #            - user
+    - name: tapisIdentityAuthMechanism
+      class: org.restheart.security.plugins.mechanisms.TapisIdentityAuthMechanism
+      args:
+        serviceToken: {{{serviceToken}}}
+        tokenHeader: {{{tokenHeader}}}
+        securityKernalEndPoint: {{{securityKernalEndPoint}}}
 
 ## Authenticators
 
- # An Authenticator verify user credential and are used by one or more 
+ # An Authenticator verify user credential and are used by one or more
  # AuthMachanisms
 
  # See README.md for the list of available Authenticators
@@ -117,24 +130,31 @@ authenticators:
     - name: simpleFileAuthenticator
       class: org.restheart.security.plugins.authenticators.SimpleFileAuthenticator
       args:
-        conf-file: ../etc/users.yml
+        conf-file: ../lcl-tst/etc/users.yml
 
 ## Authorizers
 
  # Authorizers verify if a request is allowed.
-     
- # As an in-bound request is received and authenticated the isAllowed() method is 
- # called on each authenticator in turn until one of the following occurs: 
- # an authenticator allows the incoming request or the list of authenticators is 
+
+ # As an in-bound request is received and authenticated the isAllowed() method is
+ # called on each authenticator in turn until one of the following occurs:
+ # an authenticator allows the incoming request or the list of authenticators is
  # exhausted. In the latter case, the request ends and 403 Forbidden is returned.
 
  # See README.md for the list of available Authorizers
 
+# authorizers:
+#     - name: requestPredicatesAuthorizer
+#       class: org.restheart.security.plugins.authorizers.RequestPredicatesAuthorizer
+#       args:
+#         conf-file: ../etc/acl.yml
+
+# be aware using BootStrapper execution set working dir to
 authorizers:
-    - name: requestPredicatesAuthorizer
-      class: org.restheart.security.plugins.authorizers.RequestPredicatesAuthorizer
+    - name: tapisRequestPredicatesAuthorizer
+      class: org.restheart.security.plugins.authorizers.TapisRequestPredicatesAuthorizer
       args:
-        conf-file: ../etc/acl.yml
+        conf-file: ../lcl-tst/etc/tapis.acl.yml
 
 ## Token Manager
 
@@ -213,10 +233,10 @@ plugins-args:
  # WARNING: use requests-log-level level 2 only for development purposes, it logs user credentials (Authorization and Auth-Token headers)
 
 enable-log-file: true
-log-file-path: /var/log/restheart-security.log
+log-file-path: var/log/restheart-security.log
 enable-log-console: true
-log-level: DEBUG
-requests-log-level: 1
+log-level: {{{log-level}}}
+requests-log-level: 2
 ansi-console: true
 
 #### Performance Options
