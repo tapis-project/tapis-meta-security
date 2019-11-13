@@ -27,8 +27,8 @@ COPY etc/*.properties /opt/restheart/etc/
 COPY target/tapis-meta-restheart-security.jar /opt/restheart/
 COPY lib/restheart-security-1.2.4-SNAPSHOT-nodeps.jar /opt/restheart/
 
-ENTRYPOINT [ "java", "-Dfile.encoding=UTF-8", "-server", "-cp", "restheart-security-1.2.4-SNAPSHOT-nodeps.jar:tapis-meta-restheart-security.jar", "org.restheart.security.Bootstrapper", "etc/restheart-security.yml"]
-CMD ["--envFile", "etc/default.properties"]
-#CMD ["bin/bash"]
+# ENTRYPOINT [ "java", "-Dfile.encoding=UTF-8", "-server", "-cp", "restheart-security-1.2.4-SNAPSHOT-nodeps.jar:tapis-meta-restheart-security.jar", "org.restheart.security.Bootstrapper", "etc/restheart-security.yml"]
+# CMD "java -Dfile.encoding=UTF-8 -server -cp restheart-security-1.2.4-SNAPSHOT-nodeps.jar:tapis-meta-restheart-security.jar org.restheart.security.Bootstrapper etc/restheart-security.yml --envFile etc/default.properties
+CMD ["bin/bash"]
 
 EXPOSE 8080
