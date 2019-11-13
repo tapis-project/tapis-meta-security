@@ -65,8 +65,10 @@ public class TapisIdentityAuthMechanism implements AuthMechanism {
     }
     
     // again if we can't process the token we can't continue and need to return NOT_AUTHENTICATED
+    // at this point we have candidate encoded token let's import and decode
     TapisJWTProcessor tapisJWTProcessor = new TapisJWTProcessor();
     try {
+      // import and decode
       tapisJWTProcessor.importAndDecodeJwt(encodedToken);
       if(tapisJWTProcessor.isValid){
         TapisTokenClaims claims = tapisJWTProcessor.getClaims();
@@ -83,7 +85,7 @@ public class TapisIdentityAuthMechanism implements AuthMechanism {
         }
       }
     } catch (TapisSecurityException e) {
-      //TODO need to integrate MsgUtils
+      LOGGER.debug("We caught an exception during token prosessing");
       e.printStackTrace();
       return AuthenticationMechanismOutcome.NOT_AUTHENTICATED;
     }
@@ -139,5 +141,5 @@ public class TapisIdentityAuthMechanism implements AuthMechanism {
     }
     return null;
   }
-
+  
 }
