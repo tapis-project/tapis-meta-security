@@ -17,7 +17,7 @@ services:
    restheart-security:
       image: tapis/tapis-meta-rh-security:dev
       container_name: meta-rh-security
-      command: " --envFile etc/dev.properties"
+      command: "java -Dfile.encoding=UTF-8 -server -cp restheart-security-1.2.4-SNAPSHOT-nodeps.jar:tapis-meta-restheart-security.jar org.restheart.security.Bootstrapper etc/restheart-security.yml --envFile etc/dev.properties"
       depends_on:
          - restheart
       networks:
