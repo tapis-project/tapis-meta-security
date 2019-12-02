@@ -6,12 +6,15 @@ import com.google.api.client.http.HttpHeaders;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestFactory;
 import com.google.api.client.http.javanet.NetHttpTransport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 public class TapisMetaSKClient {
   private final String skEndpoint;
   private final String serviceToken;
+  private static final Logger LOGGER = LoggerFactory.getLogger(TapisMetaSKClient.class);
   
   public TapisMetaSKClient(String skEndpoint, String serviceToken) {
     this.skEndpoint = skEndpoint;
@@ -32,7 +35,9 @@ public class TapisMetaSKClient {
       headers.setContentType("application/json");
       rawResponse = request.execute().parseAsString();
     } catch (IOException e) {
+      LOGGER.debug("We caught an exception trying to get roles from the security kernel and need to abort");
       e.printStackTrace();
+      return rawResponse;
     }
     return rawResponse;
   }

@@ -27,7 +27,7 @@ services:
       volumes:
          - ./etc/restheart-security.yml:/opt/restheart/etc/restheart-security.yml:ro
          - ./etc/users.yml:/opt/restheart/etc/users.yml:ro
-         - ./etc/tapis.acl.yml:/opt/restheart/etc/tapis.acl.yml:ro
+         - ./etc/tapis.acl.yml:/opt/restheart/etc/acl.yml:ro
          - ./etc/dev.properties:/opt/restheart/etc/dev.properties:ro
 
    restheart:
