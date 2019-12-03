@@ -3,3 +3,4 @@
 *.iml
 
 /var/log/
+/Docker/kompose/
