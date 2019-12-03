@@ -37,7 +37,8 @@ instance-name: test
  # problem-server-retry (optional, default 10) Time in seconds between retries for problem server.
 proxies:
   - location: /v3/meta/
-    proxy-pass: {{{restheart-proxy-pass}}}
+    proxy-pass: http://127.0.0.1:8080  # for ide testing
+    # proxy-pass: ajp://restheart:8080
     rewrite-host-header: true
     connections-per-thread: 20
     name: restheart
@@ -130,7 +131,8 @@ authenticators:
     - name: simpleFileAuthenticator
       class: org.restheart.security.plugins.authenticators.SimpleFileAuthenticator
       args:
-        conf-file: ../lcl-tst/etc/users.yml
+        conf-file: etc/users.yml
+        # conf-file: ../lcl-tst/etc/users.yml
 
 ## Authorizers
 
@@ -154,7 +156,8 @@ authorizers:
     - name: tapisRequestPredicatesAuthorizer
       class: org.restheart.security.plugins.authorizers.TapisRequestPredicatesAuthorizer
       args:
-        conf-file: ../lcl-tst/etc/tapis.acl.yml
+        conf-file: etc/tapis.acl.yml
+        # conf-file: ../lcl-tst/etc/tapis.acl.yml  # for ide testing
 
 ## Token Manager
 
@@ -233,7 +236,7 @@ plugins-args:
  # WARNING: use requests-log-level level 2 only for development purposes, it logs user credentials (Authorization and Auth-Token headers)
 
 enable-log-file: true
-log-file-path: var/log/restheart-security.log
+log-file-path: ../var/log/restheart-security.log
 enable-log-console: true
 log-level: {{{log-level}}}
 requests-log-level: 2

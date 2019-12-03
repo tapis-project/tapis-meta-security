@@ -16,7 +16,7 @@ PUT localhost:8080/testdb
 ###
 
 ### 2. list collections on testdb
-GET localhost:18080/testdb/
+GET localhost:8080/testdb/
 
 # returned a simple json
 ###
