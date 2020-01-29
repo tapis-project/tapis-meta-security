@@ -3,7 +3,7 @@ set -e
 # =================================================================
 # Script to build the image for RestHeart security image deployment
 # includes the nodeps jar from RestHeart security build
-#   lib/restheart-security-1.2.4-SNAPSHOT-nodeps.jar
+#   lib/restheart-security-1.3.0-nodeps.jar
 #
 # target/tapis-meta-restheart-security.jar includes all the dependencies needed for standard
 # RestHeart security instance.
@@ -13,7 +13,7 @@ set -e
 # =================================================================
 
 echo "###### Building Docker image..."
-RHVERSION=1.2.4
+RHVERSION=1.3.0
 
 
 echo "###### Building Docker image for RESTHeart Security Version $RHVERSION"
