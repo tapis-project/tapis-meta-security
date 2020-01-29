@@ -1,0 +1,35 @@
+# user no user
+# host local 8080
+
+#
+#########################     RH server calls     #########################
+### 0.  sanity check RH server root
+#
+#   check vdjadmin token against RH server core returns a list of DBs
+GET c002.rodeo.tacc.utexas.edu:30401/
+
+###
+
+
+#########################     RH security calls     #########################
+### 0.  sanity check RH security front end.
+#
+#   check vdjadmin token against RH security returns a list of DBs
+GET c002.rodeo.tacc.utexas.edu:32671/v3/meta
+X-Tapis-Token: eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL2Rldi5hcGkudGFwaXMuaW8vdG9rZW5zL3YzIiwic3ViIjoidmRqYWRtaW5AZGV2IiwidGFwaXMvdGVuYW50X2lkIjoiZGV2IiwidGFwaXMvdG9rZW5fdHlwZSI6ImFjY2VzcyIsInRhcGlzL2RlbGVnYXRpb24iOmZhbHNlLCJ0YXBpcy9kZWxlZ2F0aW9uX3N1YiI6bnVsbCwidGFwaXMvdXNlcm5hbWUiOiJ2ZGphZG1pbiIsInRhcGlzL2FjY291bnRfdHlwZSI6InVzZXIiLCJleHAiOjE2MDQ2ODAzMzR9.FvlNWjy1rOZFGtGJbNqahD4zbmnpBc9PywvFLvPX54vfZB3DIu0sIkES0yTjjAg0qxdQdYhHAyKrV1Kbl7C89a4XEIyljqembWnGCuCLkNy6zmn1Bqj3osJn7Zdm7wAmuwTxg2jPH9Yim-C09-gmijNNKqs_sn_IhPKcs4718PBRWM6V8jCJY7U7kIlklc8Ngg1S6TCQ8K1kidCa2CcOZNzKWw3lfAYY8up-9rNCb88Luujv-ZPN2bC6TAPwKMwiiR9Z-rfAzTv8ftevDoQlFp6WWovsK1GRok8TWbCL5t9wzhZ04mh1XkRJm9m_LVubfdZAG19X8wOV_pNj8n9Kmw
+# Content-Type: application/json
+
+###
+
+#  1. create a new db  vdjadmin token
+PUT c002.rodeo.tacc.utexas.edu:32671/v3/meta/testdb
+X-Tapis-Token: eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL2Rldi5hcGkudGFwaXMuaW8vdG9rZW5zL3YzIiwic3ViIjoidmRqYWRtaW5AZGV2IiwidGFwaXMvdGVuYW50X2lkIjoiZGV2IiwidGFwaXMvdG9rZW5fdHlwZSI6ImFjY2VzcyIsInRhcGlzL2RlbGVnYXRpb24iOmZhbHNlLCJ0YXBpcy9kZWxlZ2F0aW9uX3N1YiI6bnVsbCwidGFwaXMvdXNlcm5hbWUiOiJ2ZGphZG1pbiIsInRhcGlzL2FjY291bnRfdHlwZSI6InVzZXIiLCJleHAiOjE2MDQ2ODAzMzR9.FvlNWjy1rOZFGtGJbNqahD4zbmnpBc9PywvFLvPX54vfZB3DIu0sIkES0yTjjAg0qxdQdYhHAyKrV1Kbl7C89a4XEIyljqembWnGCuCLkNy6zmn1Bqj3osJn7Zdm7wAmuwTxg2jPH9Yim-C09-gmijNNKqs_sn_IhPKcs4718PBRWM6V8jCJY7U7kIlklc8Ngg1S6TCQ8K1kidCa2CcOZNzKWw3lfAYY8up-9rNCb88Luujv-ZPN2bC6TAPwKMwiiR9Z-rfAzTv8ftevDoQlFp6WWovsK1GRok8TWbCL5t9wzhZ04mh1XkRJm9m_LVubfdZAG19X8wOV_pNj8n9Kmw
+
+###
+
+
+#  2. list collections
+GET http://c002.rodeo.tacc.utexas.edu:32671/v3/meta/testdb
+X-Tapis-Token: eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL2Rldi5hcGkudGFwaXMuaW8vdG9rZW5zL3YzIiwic3ViIjoidmRqYWRtaW5AZGV2IiwidGFwaXMvdGVuYW50X2lkIjoiZGV2IiwidGFwaXMvdG9rZW5fdHlwZSI6ImFjY2VzcyIsInRhcGlzL2RlbGVnYXRpb24iOmZhbHNlLCJ0YXBpcy9kZWxlZ2F0aW9uX3N1YiI6bnVsbCwidGFwaXMvdXNlcm5hbWUiOiJ2ZGphZG1pbiIsInRhcGlzL2FjY291bnRfdHlwZSI6InVzZXIiLCJleHAiOjE2MDQ2ODAzMzR9.FvlNWjy1rOZFGtGJbNqahD4zbmnpBc9PywvFLvPX54vfZB3DIu0sIkES0yTjjAg0qxdQdYhHAyKrV1Kbl7C89a4XEIyljqembWnGCuCLkNy6zmn1Bqj3osJn7Zdm7wAmuwTxg2jPH9Yim-C09-gmijNNKqs_sn_IhPKcs4718PBRWM6V8jCJY7U7kIlklc8Ngg1S6TCQ8K1kidCa2CcOZNzKWw3lfAYY8up-9rNCb88Luujv-ZPN2bC6TAPwKMwiiR9Z-rfAzTv8ftevDoQlFp6WWovsK1GRok8TWbCL5t9wzhZ04mh1XkRJm9m_LVubfdZAG19X8wOV_pNj8n9Kmw
+
+###
