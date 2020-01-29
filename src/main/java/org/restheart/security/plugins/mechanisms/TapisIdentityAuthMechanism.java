@@ -82,24 +82,30 @@ public class TapisIdentityAuthMechanism implements AuthMechanism {
           TapisSKRolesToAccountRolesMapper accountRolesMapper = new TapisSKRolesToAccountRolesMapper();
           Set roles = (Set)accountRolesMapper.getSKRolesList(skResponse);
           sa = new TapisAccount(claims.getUserName(),roles,claims.getTenantId());
+        }else {
+          LOGGER.debug("We got a null security kernel response for some reason and need to abort");
+          securityContext.authenticationFailed("Security Kernel response was empty","TapisIdentityAuthenticationManager");
+          return AuthenticationMechanismOutcome.NOT_AUTHENTICATED;
         }
       }
     } catch (TapisSecurityException e) {
-      LOGGER.debug("We caught an exception during token prosessing");
+      LOGGER.debug("We caught an exception during token processing");
       e.printStackTrace();
+      securityContext.authenticationFailed("Token couldn't be processed","TapisIdentityAuthenticationManager");
       return AuthenticationMechanismOutcome.NOT_AUTHENTICATED;
     }
     // lastly check to see if token is verified against the pubic key.
     try {
       if(!tapisJWTProcessor.verifyToken(encodedToken)){
+        securityContext.authenticationFailed("Token couldn't be verified","TapisIdentityAuthenticationManager");
         return AuthenticationMechanismOutcome.NOT_AUTHENTICATED;
       }
     } catch (TapisSecurityException e) {
       //TODO need to integrate MsgUtils
       e.printStackTrace();
+      securityContext.authenticationFailed("Token couldn't be verified","TapisIdentityAuthenticationManager");
       return AuthenticationMechanismOutcome.NOT_AUTHENTICATED;
     }
-  
   
     securityContext.authenticationComplete(sa, "TapisIdentityAuthenticationManager", true);
     return AuthenticationMechanismOutcome.AUTHENTICATED;
