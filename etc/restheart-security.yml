@@ -36,11 +36,11 @@ instance-name: {{{instance-name}}}
  # connections-ttl (optional, default -1) Connections Time to Live in seconds.
  # problem-server-retry (optional, default 10) Time in seconds between retries for problem server.
 proxies:
-    - location: /
-      proxy-pass: {{{restheart-proxy-pass}}}
-      rewrite-host-header: true
-      connections-per-thread: 20
-      name: restheart
+  - location: /v3/meta/
+    proxy-pass: {{{restheart-proxy-pass}}}
+    rewrite-host-header: true
+    connections-per-thread: 20
+    name: restheart
 
 #### SSL Configuration
 

@@ -1,9 +1,6 @@
 package org.restheart.security.plugins.mechanisms;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +26,7 @@ public class TapisSKRolesToAccountRolesMapper {
       return roles;
     }
     
-    JsonObject jsonObject = JsonParser.parseString(response).getAsJsonObject();
+    JsonObject jsonObject = new Gson().fromJson(response,JsonObject.class);
     if(jsonObject == null){
       return roles;
     }

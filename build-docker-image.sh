@@ -12,14 +12,20 @@ set -e
 # deployment.
 # =================================================================
 
-echo "###### Building Docker image..."
-RHVERSION=1.3.0
+echo "###### Building jar artifacts ###### "
+# basic build and install for plugin artifacts
+mvn -f pom.xml clean install
+
+echo "###### Building Docker image... ###### "
+RHVERSION=dev
 
 
-echo "###### Building Docker image for RESTHeart Security Version $RHVERSION"
-docker  build -t aloe/restheart:$RHVERSION .
+echo "  Building Docker image for RESTHeart Security Version $RHVERSION   "
+docker  build -t tapis/tapis-meta-rh-security:$RHVERSION .
 
-docker tag aloe/restheart:$RHVERSION "jenkins2.tacc.utexas.edu:5000/tapis/restheart:$RHVERSION"
-echo "###### Docker image successfully built."
+docker tag tapis/tapis-meta-rh-security:$RHVERSION "jenkins2.tacc.utexas.edu:5000/tapis/tapis-meta-rh-security:$RHVERSION"
+echo "Docker image successfully built."
 
-docker push "jenkins2.tacc.utexas.edu:5000/aloe/restheart:$RHVERSION"
+docker push "jenkins2.tacc.utexas.edu:5000/tapis/tapis-meta-rh-security:$RHVERSION"
+
+docker push "tapis/tapis-meta-rh-security:$RHVERSION"

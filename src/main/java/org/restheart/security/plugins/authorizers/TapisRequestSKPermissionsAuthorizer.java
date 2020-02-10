@@ -2,16 +2,32 @@ package org.restheart.security.plugins.authorizers;
 
 import io.undertow.security.idm.Account;
 import io.undertow.server.HttpServerExchange;
+import org.restheart.security.ConfigurationException;
+import org.restheart.security.handlers.exchange.ByteArrayRequest;
 import org.restheart.security.plugins.Authorizer;
+import org.restheart.security.plugins.FileConfigurablePlugin;
+import org.restheart.security.plugins.mechanisms.TapisAccount;
 
 import java.security.Principal;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.function.Consumer;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static io.undertow.predicate.Predicate.PREDICATE_CONTEXT;
 
-public class TapisRequestSKPermissionsAuthorizer implements Authorizer {
+public class TapisRequestSKPermissionsAuthorizer extends FileConfigurablePlugin implements Authorizer {
+  private final String mechanismName;
+  // private final String placeHolder;
+
+  public TapisRequestSKPermissionsAuthorizer(String mechanismName, Map<String, Object> configuration)
+      throws ConfigurationException {
+    this.mechanismName = mechanismName;
+    // this.placeHolder = argValue(args, "placeHolder");
+
+    
+  }
   
   @Override
   public boolean isAllowed(HttpServerExchange exchange) {
@@ -27,8 +43,8 @@ public class TapisRequestSKPermissionsAuthorizer implements Authorizer {
     // see https://issues.jboss.org/browse/UNDERTOW-1317
     exchange.setRelativePath(exchange.getRequestPath());
   
-  
-    return false;
+    TapisAccount tapisAccount = (TapisAccount) exchange.getSecurityContext().getAuthenticatedAccount();
+    return tapisAccount.getIsPermitted();
   }
   
   @Override
@@ -38,21 +54,7 @@ public class TapisRequestSKPermissionsAuthorizer implements Authorizer {
     // if acl is null return true  acl was populated from the config file   ( we won't use it )
     // except for our liveness and amiup services which are unauthenticated endpoints.
     
-    
-    // is this a service account jwt?
-    // or
-    // user account jwt
-    
-    // check the path against the role ???
-    // ok how do we map roles to dbs?
-    
-    
-    
-    
-    
-    
-    
-    return true;
+    return false;
   }
   
   private Account account(HttpServerExchange exchange) {
@@ -64,7 +66,12 @@ public class TapisRequestSKPermissionsAuthorizer implements Authorizer {
   private boolean isAuthenticated(Account authenticatedAccount) {
     return authenticatedAccount != null;
   }
- 
+  
+  @Override
+  public Consumer<? super Map<String, Object>> consumeConfiguration() throws ConfigurationException {
+    return null;
+  }
+  
   private static class NotAuthenticatedAccount implements Account {
     
     private static final long serialVersionUID = 3124L;
@@ -79,7 +86,7 @@ public class TapisRequestSKPermissionsAuthorizer implements Authorizer {
       return newHashSet("$unauthenticated");
     }
   }
-  
+
   
 }
 

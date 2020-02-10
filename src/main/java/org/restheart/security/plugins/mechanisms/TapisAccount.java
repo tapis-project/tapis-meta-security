@@ -13,8 +13,10 @@ public class TapisAccount implements Account {
   final private Principal principal;
   final private Set<String> roles;
   final private String tenant;
+  final private boolean isPermitted;
   
-  public TapisAccount(String name, Set<String> _roles, String _tenant ){
+  public TapisAccount(String name, Set<String> _roles, String _tenant, boolean isPermitted){
+
     if (name == null) {
       throw new IllegalArgumentException("argument principal cannot be null");
     }
@@ -30,6 +32,7 @@ public class TapisAccount implements Account {
     this.principal= new BasePrincipal(name);
     roles=_roles;
     this.tenant=_tenant;
+    this.isPermitted = isPermitted;
   }
   
   @Override
@@ -44,5 +47,9 @@ public class TapisAccount implements Account {
   
   public String getTenant(){
     return tenant;
+  }
+  
+  public boolean getIsPermitted(){
+    return isPermitted;
   }
 }

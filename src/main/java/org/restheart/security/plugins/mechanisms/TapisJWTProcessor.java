@@ -148,4 +148,7 @@ import org.slf4j.LoggerFactory;
     return _jwtPublicKey;
   }
   
+  public static void main(String[] args) {
+    TapisJWTProcessor jwtp = new TapisJWTProcessor();
+  }
 }

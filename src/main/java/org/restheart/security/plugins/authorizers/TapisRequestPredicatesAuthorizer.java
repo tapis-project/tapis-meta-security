@@ -25,6 +25,7 @@ import org.restheart.security.ConfigurationException;
 import org.restheart.security.handlers.exchange.ByteArrayRequest;
 import org.restheart.security.plugins.Authorizer;
 import org.restheart.security.plugins.FileConfigurablePlugin;
+import org.restheart.security.plugins.mechanisms.TapisAccount;
 import org.restheart.security.utils.LambdaUtils;
 
 import java.io.FileNotFoundException;
@@ -107,10 +108,14 @@ public class TapisRequestPredicatesAuthorizer
         // see https://issues.jboss.org/browse/UNDERTOW-1317
         exchange.setRelativePath(exchange.getRequestPath());
         
+/*
         boolean b = roles(exchange).anyMatch(role -> aclForRole(role)
             .stream()
             .anyMatch(p -> p.resolve(exchange)));
-        return b;
+*/
+    
+        TapisAccount tapisAccount = (TapisAccount) exchange.getSecurityContext().getAuthenticatedAccount();
+        return tapisAccount.getIsPermitted();
     }
 
     @Override

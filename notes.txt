@@ -1,5 +1,5 @@
 # run new tapis meta RH4 security from commandline from root of project
- java -Dfile.encoding=UTF-8 -server -cp lib/restheart-security-1.2.4-SNAPSHOT-nodeps.jar:target/tapis-meta-restheart-security.jar org.restheart.security.Bootstrapper etc/restheart-security.yml --envFile etc/dev.properties
+ java -Dfile.encoding=UTF-8 -server -cp lib/restheart-security-1.3.0-nodeps.jar:target/tapis-meta-restheart-security.jar org.restheart.security.Bootstrapper etc/restheart-security.yml --envFile etc/dev.properties
 
 # build Docker image from project root
 docker build --tag tapis-meta-rh-security:dev .
